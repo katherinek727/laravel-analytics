@@ -57,3 +57,8 @@ Route::get('/api/jokes/random', function () {
         ], 500);
     }
 });
+
+
+// Page visit tracking API
+Route::post('/api/track-visit', [App\Http\Controllers\TrackingController::class, 'track'])
+    ->name('track.visit');
