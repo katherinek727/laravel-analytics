@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Fields Test - Joke Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .type-selector {
+            margin-bottom: 40px;
+        }
+
+        .type-label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .type-select {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            background: white;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23667eea' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 20px center;
+            background-size: 20px;
+        }
+
+        .type-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .type-select:hover {
+            border-color: #764ba2;
+        }
+
+        .form-fields {
+            display: grid;
+            gap: 20px;
+        }
+
+        .form-field {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            border: 2px solid #f0f0f0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: top;
+        }
+
+        .form-field:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.15);
+        }
+
+        .field-label {
+            display: block;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .field-input {
+            width: 100%;
+            padding: 14px 18px;
+            font-size: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            background: #fafafa;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        .field-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .field-input:hover {
+            border-color: #764ba2;
+        }
+
+        .field-info {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .field-info::before {
+            content: "ℹ️";
+            font-size: 0.8rem;
+        }
+
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: #f0f7ff;
+            border-radius: 20px;
+            margin-top: 10px;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #4CAF50;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Custom styles for our dynamic fields controller */
+        .field-visible {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .field-hidden {
+            display: none;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🎭 JokeMaster Pro</div>
+            <div class="subtitle">Intelligent Joke Management System</div>
+        </div>
+
+        <div class="type-selector">
+            <label class="type-label">🎯 Select Joke Type</label>
+            <select class="type-select" name="type">
+                <option value="">-- Select a type --</option>
+                <option value="general">🎪 General Jokes</option>
+                <option value="programming">💻 Programming Jokes</option>
+                <option value="knock-knock">🚪 Knock-Knock Jokes</option>
+                <option value="dad">👨‍👧‍👦 Dad Jokes</option>
+                <option value="all">🌟 Show All Fields</option>
+            </select>
+        </div>
+
+        <div class="form-fields">
+            <!-- General Joke Fields -->
+            <div class="form-field" data-field-types="general,all">
+                <label class="field-label">🎭 General Joke Setup</label>
+                <input type="text" class="field-input" name="general-setup" placeholder="Enter the setup for a general joke...">
+                <div class="field-info">Visible for: General jokes</div>
+            </div>
+
+            <div class="form-field" data-field-types="general,all">
+                <label class="field-label">😂 General Punchline</label>
+                <input type="text" class="field-input" name="general-punchline" placeholder="Enter the punchline...">
+                <div class="field-info">Visible for: General jokes</div>
+            </div>
+
+            <!-- Programming Joke Fields -->
+            <div class="form-field" data-field-types="programming,all">
+                <label class="field-label">💻 Code Snippet</label>
+                <textarea class="field-input" name="programming-code" rows="3" placeholder="Enter programming code or snippet..."></textarea>
+                <div class="field-info">Visible for: Programming jokes</div>
+            </div>
+
+            <div class="form-field" data-field-types="programming,all">
+                <label class="field-label">🐛 Bug Description</label>
+                <input type="text" class="field-input" name="programming-bug" placeholder="Describe the programming bug...">
+                <div class="field-info">Visible for: Programming jokes</div>
+            </div>
+
+            <!-- Knock-Knock Joke Fields -->
+            <div class="form-field" data-field-types="knock-knock,all">
+                <label class="field-label">🚪 Who's There?</label>
+                <input type="text" class="field-input" name="knock-knock-who" placeholder="Enter 'Who's there?' response...">
+                <div class="field-info">Visible for: Knock-knock jokes</div>
+            </div>
+
+            <div class="form-field" data-field-types="knock-knock,all">
+                <label class="field-label">👋 Response Line</label>
+                <input type="text" class="field-input" name="knock-knock-response" placeholder="Enter the response line...">
+                <div class="field-info">Visible for: Knock-knock jokes</div>
+            </div>
+
+            <!-- Dad Joke Fields -->
+            <div class="form-field" data-field-types="dad,all">
+                <label class="field-label">👨‍👧‍👦 Dad Joke Setup</label>
+                <input type="text" class="field-input" name="dad-setup" placeholder="Enter a classic dad joke setup...">
+                <div class="field-info">Visible for: Dad jokes</div>
+            </div>
+
+            <div class="form-field" data-field-types="dad,all">
+                <label class="field-label">😅 Groan Factor</label>
+                <select class="field-input" name="dad-groan-level">
+                    <option value="mild">Mild Groan 😊</option>
+                    <option value="medium">Medium Groan 😅</option>
+                    <option value="extreme">Extreme Groan 😫</option>
+                </select>
+                <div class="field-info">Visible for: Dad jokes</div>
+            </div>
+
+            <!-- Common Fields -->
+            <div class="form-field" data-field-types="general,programming,knock-knock,dad,all">
+                <label class="field-label">⭐ Rating (1-5)</label>
+                <input type="range" class="field-input" name="joke-rating" min="1" max="5" value="3">
+                <div class="field-info">Visible for: All joke types</div>
+            </div>
+
+            <div class="form-field" data-field-types="general,programming,knock-knock,dad,all">
+                <label class="field-label">📝 Additional Notes</label>
+                <textarea class="field-input" name="joke-notes" rows="2" placeholder="Any additional notes about the joke..."></textarea>
+                <div class="field-info">Visible for: All joke types</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="status-indicator">
+                <div class="status-dot"></div>
+                <span>Dynamic Fields Controller: Active</span>
+            </div>
+            <p style="margin-top: 15px;">Select a joke type above to see relevant fields appear magically! ✨</p>
+            <p style="margin-top: 10px; font-size: 0.8rem; color: #888;">
+                This demo uses a custom JavaScript algorithm with data attributes for reliable field filtering.
+            </p>
+        </div>
+    </div>
+
+    <script src="dynamic-fields.js"></script>
+    <script>
+        // Additional demo functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const typeSelect = document.querySelector('select[name="type"]');
+            const fields = document.querySelectorAll('.form-field');
+            
+            // Add some interactive effects
+            typeSelect.addEventListener('change', function() {
+                const selectedOption = this.options[this.selectedIndex];
+                const typeName = selectedOption.text.replace(/[^a-zA-Z\s]/g, '').trim();
+                
+                // Update status indicator
+                const statusText = document.querySelector('.status-indicator span');
+                if (this.value) {
+                    statusText.textContent = `Showing fields for: ${typeName}`;
+                } else {
+                    statusText.textContent = 'Dynamic Fields Controller: Active';
+                }
+            });
+
+            // Add focus effects to fields
+            fields.forEach(field => {
+                const input = field.querySelector('input, select, textarea');
+                if (input) {
+                    input.addEventListener('focus', () => {
+                        field.style.borderColor = '#667eea';
+                        field.style.boxShadow = '0 15px 40px rgba(102, 126, 234, 0.2)';
+                    });
+
+                    input.addEventListener('blur', () => {
+                        field.style.borderColor = '';
+                        field.style.boxShadow = '';
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
