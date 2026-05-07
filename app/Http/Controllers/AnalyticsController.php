@@ -76,26 +76,52 @@ class AnalyticsController extends Controller
     {
         $last24Hours = Carbon::now()->subHours(24);
         
-        $hourlyData = PageVisit::select(
-            DB::raw('HOUR(visited_at) as hour'),
-            DB::raw('COUNT(DISTINCT visitor_id) as unique_visits'),
-            DB::raw('COUNT(*) as total_visits')
-        )
-        ->where('visited_at', '>=', $last24Hours)
-        ->groupBy(DB::raw('HOUR(visited_at)'))
-        ->orderBy('hour')
-        ->get();
+        // Database-agnostic hour extraction
+        $connection = config('database.default');
+        
+        if ($connection === 'sqlite') {
+            // SQLite-compatible hour extraction
+            $hourlyData = PageVisit::select(
+                DB::raw('CAST(strftime("%H", visited_at) AS INTEGER) as hour'),
+                DB::raw('COUNT(DISTINCT visitor_id) as unique_visits'),
+                DB::raw('COUNT(*) as total_visits')
+            )
+            ->where('visited_at', '>=', $last24Hours)
+            ->groupBy(DB::raw('strftime("%H", visited_at)'))
+            ->orderBy('hour')
+            ->get();
+        } else {
+            // MySQL/PostgreSQL hour extraction
+            $hourlyData = PageVisit::select(
+                DB::raw('HOUR(visited_at) as hour'),
+                DB::raw('COUNT(DISTINCT visitor_id) as unique_visits'),
+                DB::raw('COUNT(*) as total_visits')
+            )
+            ->where('visited_at', '>=', $last24Hours)
+            ->groupBy(DB::raw('HOUR(visited_at)'))
+            ->orderBy('hour')
+            ->get();
+        }
 
         // Format for Chart.js
         $hours = [];
         $uniqueVisits = [];
         $totalVisits = [];
 
-        for ($i = 0; $i < 24; $i++) {
-            $hourData = $hourlyData->firstWhere('hour', $i);
-            $hours[] = sprintf('%02d:00', $i);
-            $uniqueVisits[] = $hourData ? $hourData->unique_visits : 0;
-            $totalVisits[] = $hourData ? $hourData->total_visits : 0;
+        // If no data in last 24 hours, create empty arrays
+        if ($hourlyData->isEmpty()) {
+            for ($i = 0; $i < 24; $i++) {
+                $hours[] = sprintf('%02d:00', $i);
+                $uniqueVisits[] = 0;
+                $totalVisits[] = 0;
+            }
+        } else {
+            for ($i = 0; $i < 24; $i++) {
+                $hourData = $hourlyData->firstWhere('hour', $i);
+                $hours[] = sprintf('%02d:00', $i);
+                $uniqueVisits[] = $hourData ? $hourData->unique_visits : 0;
+                $totalVisits[] = $hourData ? $hourData->total_visits : 0;
+            }
         }
 
         return [
