@@ -123,7 +123,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                     <!-- Total Visits -->
                     <div class="stat-card bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-                        <div class="flex items-center">
+                        <div class="flex items-center gap-3">
                             <div class="p-3 rounded-lg bg-gradient-primary">
                                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -146,7 +146,7 @@
 
                     <!-- Today's Visits -->
                     <div class="stat-card bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-                        <div class="flex items-center">
+                        <div class="flex items-center gap-3">
                             <div class="p-3 rounded-lg bg-gradient-success">
                                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -173,7 +173,7 @@
 
                     <!-- Average Duration -->
                     <div class="stat-card bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-                        <div class="flex items-center">
+                        <div class="flex items-center gap-3">
                             <div class="p-3 rounded-lg bg-gradient-warning">
                                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -193,7 +193,7 @@
 
                     <!-- Jokes Collected -->
                     <div class="stat-card bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-                        <div class="flex items-center">
+                        <div class="flex items-center gap-3">
                             <div class="p-3 rounded-lg bg-gradient-info">
                                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />

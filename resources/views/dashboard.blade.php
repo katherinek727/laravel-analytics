@@ -1,4 +1,14 @@
 <x-app-layout>
+    <style>
+        .dashboard-card {
+            transition: all 0.3s ease;
+        }
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+    
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Dashboard') }}
@@ -27,8 +37,8 @@
             <!-- Feature Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Analytics Dashboard -->
-                <a href="{{ route('analytics.dashboard') }}" class="block group">
-                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-200 hover:border-blue-300 transition-colors h-full">
+                <a href="{{ route('analytics.dashboard') }}" class="block group dashboard">
+                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-200 hover:border-blue-300 transition-colors h-full dashboard-card">
                         <div class="p-6">
                             <div class="flex items-center mb-4">
                                 <div class="p-2 rounded-lg bg-blue-100 group-hover:bg-blue-200 transition-colors">
@@ -50,8 +60,8 @@
                 </a>
 
                 <!-- Jokes API -->
-                <a href="/api/jokes" target="_blank" class="block group">
-                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-200 hover:border-green-300 transition-colors h-full">
+                <a href="/api/jokes" target="_blank" class="block group dashboard">
+                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-200 hover:border-green-300 transition-colors h-full dashboard-card">
                         <div class="p-6">
                             <div class="flex items-center mb-4">
                                 <div class="p-2 rounded-lg bg-green-100 group-hover:bg-green-200 transition-colors">
@@ -73,8 +83,8 @@
                 </a>
 
                 <!-- Dynamic Fields Demo -->
-                <a href="/test-dynamic-fields.html" target="_blank" class="block group">
-                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-200 hover:border-purple-300 transition-colors h-full">
+                <a href="/test-dynamic-fields.html" target="_blank" class="block group dashboard">
+                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-200 hover:border-purple-300 transition-colors h-full dashboard-card">
                         <div class="p-6">
                             <div class="flex items-center mb-4">
                                 <div class="p-2 rounded-lg bg-purple-100 group-hover:bg-purple-200 transition-colors">
