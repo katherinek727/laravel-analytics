@@ -25,6 +25,13 @@
             transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
+        .dashboard-card {
+            transition: all 0.3s ease;
+        }
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
         .chart-container {
             position: relative;
             height: 300px;
@@ -122,7 +129,7 @@
                 <!-- Statistics Cards -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                     <!-- Total Visits -->
-                    <div class="stat-card bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+                    <div class="stat-card bg-white rounded-xl shadow-sm p-6 border border-gray-200 dashboard-card">
                         <div class="flex items-center gap-3">
                             <div class="p-3 rounded-lg bg-gradient-primary">
                                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -145,7 +152,7 @@
                     </div>
 
                     <!-- Today's Visits -->
-                    <div class="stat-card bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+                    <div class="stat-card bg-white rounded-xl shadow-sm p-6 border border-gray-200 dashboard-card">
                         <div class="flex items-center gap-3">
                             <div class="p-3 rounded-lg bg-gradient-success">
                                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -172,7 +179,7 @@
                     </div>
 
                     <!-- Average Duration -->
-                    <div class="stat-card bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+                    <div class="stat-card bg-white rounded-xl shadow-sm p-6 border border-gray-200 dashboard-card">
                         <div class="flex items-center gap-3">
                             <div class="p-3 rounded-lg bg-gradient-warning">
                                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -192,7 +199,7 @@
                     </div>
 
                     <!-- Jokes Collected -->
-                    <div class="stat-card bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+                    <div class="stat-card bg-white rounded-xl shadow-sm p-6 border border-gray-200 dashboard-card">
                         <div class="flex items-center gap-3">
                             <div class="p-3 rounded-lg bg-gradient-info">
                                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -217,14 +224,20 @@
                 <!-- Charts Row -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                     <!-- Hourly Visits Chart -->
-                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200 dashboard-card">
                         <div class="flex justify-between items-center mb-6">
                             <div>
                                 <h3 class="text-lg font-semibold text-gray-900">Hourly Visits (Last 24h)</h3>
                                 <p class="text-sm text-gray-600">Unique vs Total visits per hour</p>
                             </div>
-                            <button onclick="refreshHourlyChart()" class="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
-                                ↻ Refresh
+                            <button onclick="refreshHourlyChart()" id="refreshHourlyBtn" class="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors flex items-center">
+                                <span id="hourlyRefreshText">↻ Refresh</span>
+                                <span id="hourlyLoading" class="hidden ml-1">
+                                    <svg class="animate-spin h-4 w-4 text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                </span>
                             </button>
                         </div>
                         <div class="chart-container">
@@ -233,14 +246,20 @@
                     </div>
 
                     <!-- City Distribution Chart -->
-                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200 dashboard-card">
                         <div class="flex justify-between items-center mb-6">
                             <div>
                                 <h3 class="text-lg font-semibold text-gray-900">City Distribution</h3>
                                 <p class="text-sm text-gray-600">Top 10 cities by visits</p>
                             </div>
-                            <button onclick="refreshCityChart()" class="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
-                                ↻ Refresh
+                            <button onclick="refreshCityChart()" id="refreshCityBtn" class="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors flex items-center">
+                                <span id="cityRefreshText">↻ Refresh</span>
+                                <span id="cityLoading" class="hidden ml-1">
+                                    <svg class="animate-spin h-4 w-4 text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                </span>
                             </button>
                         </div>
                         <div class="chart-container">
@@ -252,7 +271,7 @@
                 <!-- Device Statistics & Recent Activity -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     <!-- Device Statistics -->
-                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200 dashboard-card">
                         <h3 class="text-lg font-semibold text-gray-900 mb-6">Device Statistics</h3>
                         <div class="space-y-4">
                             @foreach($deviceStats['devices'] as $index => $device)
@@ -271,7 +290,7 @@
                     </div>
 
                     <!-- Recent Activity -->
-                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200 dashboard-card">
                         <h3 class="text-lg font-semibold text-gray-900 mb-6">Recent Activity</h3>
                         <div class="space-y-4">
                             @foreach($recentVisits as $visit)
@@ -308,7 +327,7 @@
                 </div>
 
                 <!-- Recent Jokes -->
-                <div class="mt-8 bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+                <div class="mt-8 bg-white rounded-xl shadow-sm p-6 border border-gray-200 dashboard-card">
                     <h3 class="text-lg font-semibold text-gray-900 mb-6">Recently Fetched Jokes</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         @foreach($recentJokes as $joke)
@@ -445,43 +464,131 @@
         }
 
         function refreshHourlyChart() {
+            console.log('Refreshing hourly chart...');
+            
+            // Show loading indicator
+            const hourlyBtn = document.getElementById('refreshHourlyBtn');
+            const hourlyText = document.getElementById('hourlyRefreshText');
+            const hourlyLoading = document.getElementById('hourlyLoading');
+            
+            hourlyBtn.disabled = true;
+            hourlyText.textContent = 'Refreshing...';
+            hourlyLoading.classList.remove('hidden');
+            
+            // Create abort controller for timeout
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+            
             fetch('{{ route("analytics.hourly") }}', {
+                method: 'GET',
                 headers: {
+                    'Accept': 'application/json',
                     'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
+                },
+                credentials: 'same-origin', // Include cookies for authentication
+                signal: controller.signal
             })
-                .then(response => response.json())
+                .then(response => {
+                    console.log('Hourly chart response status:', response.status);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(data => {
+                    console.log('Hourly chart data received:', data);
                     if (data.success) {
                         hourlyChart.data.labels = data.data.hours;
                         hourlyChart.data.datasets[0].data = data.data.unique_visits;
                         hourlyChart.data.datasets[1].data = data.data.total_visits;
                         hourlyChart.update('none');
                         console.log('Hourly chart refreshed at:', new Date().toLocaleTimeString());
+                        
+                        // Show success notification
+                        showNotification('Hourly chart updated successfully', 'success');
+                    } else {
+                        console.error('Hourly chart API returned success: false', data);
+                        showNotification('Failed to update hourly chart', 'error');
                     }
                 })
-                .catch(error => console.error('Error refreshing hourly chart:', error));
+                .catch(error => {
+                    console.error('Error refreshing hourly chart:', error);
+                    showNotification('Error refreshing hourly chart: ' + error.message, 'error');
+                })
+                .finally(() => {
+                    // Clear timeout
+                    clearTimeout(timeoutId);
+                    
+                    // Reset button state
+                    hourlyBtn.disabled = false;
+                    hourlyText.textContent = '↻ Refresh';
+                    hourlyLoading.classList.add('hidden');
+                });
         }
 
         function refreshCityChart() {
+            console.log('Refreshing city chart...');
+            
+            // Show loading indicator
+            const cityBtn = document.getElementById('refreshCityBtn');
+            const cityText = document.getElementById('cityRefreshText');
+            const cityLoading = document.getElementById('cityLoading');
+            
+            cityBtn.disabled = true;
+            cityText.textContent = 'Refreshing...';
+            cityLoading.classList.remove('hidden');
+            
+            // Create abort controller for timeout
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+            
             fetch('{{ route("analytics.cities") }}', {
+                method: 'GET',
                 headers: {
+                    'Accept': 'application/json',
                     'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
+                },
+                credentials: 'same-origin', // Include cookies for authentication
+                signal: controller.signal
             })
-                .then(response => response.json())
+                .then(response => {
+                    console.log('City chart response status:', response.status);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(data => {
+                    console.log('City chart data received:', data);
                     if (data.success) {
                         cityChart.data.labels = data.data.cities;
                         cityChart.data.datasets[0].data = data.data.visits;
                         cityChart.data.datasets[0].backgroundColor = data.data.colors;
                         cityChart.update('none');
                         console.log('City chart refreshed at:', new Date().toLocaleTimeString());
+                        
+                        // Show success notification
+                        showNotification('City distribution chart updated successfully', 'success');
+                    } else {
+                        console.error('City chart API returned success: false', data);
+                        showNotification('Failed to update city chart', 'error');
                     }
                 })
-                .catch(error => console.error('Error refreshing city chart:', error));
+                .catch(error => {
+                    console.error('Error refreshing city chart:', error);
+                    showNotification('Error refreshing city chart: ' + error.message, 'error');
+                })
+                .finally(() => {
+                    // Clear timeout
+                    clearTimeout(timeoutId);
+                    
+                    // Reset button state
+                    cityBtn.disabled = false;
+                    cityText.textContent = '↻ Refresh';
+                    cityLoading.classList.add('hidden');
+                });
         }
 
         function setupAutoRefresh() {
@@ -498,8 +605,21 @@
         }
 
         function refreshStats() {
-            fetch('{{ route("analytics.stats") }}')
-                .then(response => response.json())
+            console.log('Refreshing stats...');
+            fetch('{{ route("analytics.stats") }}', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                credentials: 'same-origin'
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     if (data.success) {
                         // Update stats cards if needed
@@ -507,6 +627,44 @@
                     }
                 })
                 .catch(error => console.error('Error refreshing stats:', error));
+        }
+        
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 px-4 py-3 rounded-lg shadow-lg transition-all duration-300 transform translate-x-full ${
+                type === 'success' ? 'bg-green-100 text-green-800 border border-green-200' :
+                type === 'error' ? 'bg-red-100 text-red-800 border border-red-200' :
+                'bg-blue-100 text-blue-800 border border-blue-200'
+            }`;
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        ${type === 'success' ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />' :
+                          type === 'error' ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />' :
+                          '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />'}
+                    </svg>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            // Add to document
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 10);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
         }
     </script>
 </body>
