@@ -445,7 +445,12 @@
         }
 
         function refreshHourlyChart() {
-            fetch('{{ route("analytics.hourly") }}')
+            fetch('{{ route("analytics.hourly") }}', {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
@@ -453,13 +458,19 @@
                         hourlyChart.data.datasets[0].data = data.data.unique_visits;
                         hourlyChart.data.datasets[1].data = data.data.total_visits;
                         hourlyChart.update('none');
+                        console.log('Hourly chart refreshed at:', new Date().toLocaleTimeString());
                     }
                 })
                 .catch(error => console.error('Error refreshing hourly chart:', error));
         }
 
         function refreshCityChart() {
-            fetch('{{ route("analytics.cities") }}')
+            fetch('{{ route("analytics.cities") }}', {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
@@ -467,18 +478,23 @@
                         cityChart.data.datasets[0].data = data.data.visits;
                         cityChart.data.datasets[0].backgroundColor = data.data.colors;
                         cityChart.update('none');
+                        console.log('City chart refreshed at:', new Date().toLocaleTimeString());
                     }
                 })
                 .catch(error => console.error('Error refreshing city chart:', error));
         }
 
         function setupAutoRefresh() {
+            console.log('Auto-refresh setup started');
+            
             // Refresh charts every 60 seconds
             setInterval(refreshHourlyChart, 60000);
             setInterval(refreshCityChart, 120000);
             
             // Refresh stats every 30 seconds
             setInterval(refreshStats, 30000);
+            
+            console.log('Auto-refresh intervals set: hourly(60s), city(120s), stats(30s)');
         }
 
         function refreshStats() {
